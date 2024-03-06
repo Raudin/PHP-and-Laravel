@@ -4,7 +4,10 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\HomeController;
 use App\Models\Event;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,16 +20,19 @@ use App\Models\Event;
 |
 */
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     $events = Event::all();
     return view('welcome', [
         'events' => $events,
     ]);
 });
+Route::resource('ticket', TicketController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+route::get('/home', [HomeController::class, 'index']);
 
 Route::get('/bookings/{event}', [BookingController::class, 'create'])->name('booking.create');
 Route::post('/bookings/{event}', [BookingController::class, 'store'])->name('booking.store');
